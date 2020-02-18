@@ -205,6 +205,25 @@ Typography is different in different languages and thus must be translated along
     {ts}Event Total:{/ts}
     ```
 
+### Consider leaving existing bad uses of ts unchanged when the intended functionality is working
+
+Because of demands on translators' time and the number of steps in the end-to-end translation process itself, it is sometimes better to leave existing bad instances of `ts` unchanged.
+
+An example that you should consider leaving as is would be:
+
+!!! failure "Consider leaving this as-is"
+
+    ```smarty
+    {ts 1="https://www.example.org"}This is a block of text where the wording is fine and the link works but the <a href="%1" target="_blank">link attributes</a> should be a parameter to the ts. But it's not preventing anyone completing their work tasks and isn't confusing to users.{/ts}
+    ```
+
+The above `ts` should be written as `{ts 1='href="https://www.example.org" target="_blank"'}` and then the link should be `<a %1>`, but making that change will break the existing translation just for some non-essential technical rearrangement. Within two CiviCRM release cycles the string will suddenly have become untranslated and it may be several months after that before it appears retranslated in a release.
+
+!!! success "Examples that should be changed"
+
+* If it would normally break translation but the new string is already used somewhere else, and so it's already translated.
+* Spelling mistakes. While not preventing a user from completing a task, the positives outweigh the negatives, and this is visible to the user, as compared to the above "don't change" example where the user doesn't see a problem.
+
 ## Rationale for using Gettext
 
 In most projects, strings are typically translated by either:
